@@ -35,7 +35,7 @@ python3 -m http.server 8000
 
 ## Deploy to GitHub Pages
 
-The `Deploy to GitHub Pages` workflow publishes the project on every push to `main`. In the repository settings, set **Pages → Build and deployment → Source** to **GitHub Actions**. After the first successful workflow run, the dashboard is available at <https://shibaji157.github.io/Northstar/>.
+The `Deploy to GitHub Pages` workflow enables GitHub Pages and publishes the project on every push to `main`. After the first successful workflow run, the dashboard is available at <https://shibaji157.github.io/Northstar/>.
 
 ## Project structure
 
