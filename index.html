@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101b2c">
+    <meta name="description" content="Explore Superstore sales, profit, orders, and product performance.">
+    <title>Northstar | Superstore Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="Northstar dashboard home">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>northstar<span class="brand-period">.</span></span>
+        </a>
+
+        <div class="sidebar-label">WORKSPACE</div>
+        <nav class="navigation" aria-label="Main navigation">
+          <a class="nav-link active" href="#overview"><span class="nav-icon" aria-hidden="true">▦</span> Overview</a>
+          <a class="nav-link" href="#performance"><span class="nav-icon" aria-hidden="true">↗</span> Performance</a>
+          <a class="nav-link" href="#transactions"><span class="nav-icon" aria-hidden="true">▤</span> Transactions</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-note">
+            <span class="note-icon" aria-hidden="true">✦</span>
+            <p>Good decisions start with a clear view of your data.</p>
+          </div>
+          <div class="profile">
+            <span class="avatar">SA</span>
+            <span><strong>Sales Analytics</strong><small>Workspace</small></span>
+            <span class="profile-menu" aria-hidden="true">···</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="overview">
+        <header class="topbar">
+          <div class="breadcrumbs">Workspace <span>/</span> <strong>Overview</strong></div>
+          <div class="topbar-actions">
+            <span class="live-status"><span></span> Live dashboard</span>
+            <button class="icon-button" id="refresh-button" type="button" aria-label="Reload sample data" title="Reload sample data">↻</button>
+            <span class="avatar top-avatar" aria-hidden="true">SA</span>
+          </div>
+        </header>
+
+        <section class="page-heading">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> SALES INTELLIGENCE</div>
+            <h1>Good morning<span class="heading-dot">.</span></h1>
+            <p class="subtitle">Here’s what’s happening across your Superstore business.</p>
+          </div>
+          <div class="heading-actions">
+            <label class="upload-button" for="csv-upload"><span aria-hidden="true">↑</span> Import CSV</label>
+            <input id="csv-upload" class="visually-hidden" type="file" accept=".csv,text/csv">
+            <button class="primary-button" id="download-button" type="button"><span aria-hidden="true">↓</span> Export report</button>
+          </div>
+        </section>
+
+        <section class="filters" aria-label="Dashboard filters">
+          <div class="filter-heading"><span class="filter-icon" aria-hidden="true">▽</span> Filters</div>
+          <label class="filter-control">PERIOD
+            <select id="year-filter" aria-label="Filter by order year"><option value="all">All years</option></select>
+          </label>
+          <label class="filter-control">CATEGORY
+            <select id="category-filter" aria-label="Filter by category"><option value="all">All categories</option></select>
+          </label>
+          <label class="filter-control">REGION
+            <select id="region-filter" aria-label="Filter by region"><option value="all">All regions</option></select>
+          </label>
+          <label class="search-control"><span aria-hidden="true">⌕</span>
+            <input id="search-filter" type="search" placeholder="Search products, customers..." aria-label="Search products or customers">
+          </label>
+          <button class="reset-button" id="reset-filters" type="button">Reset</button>
+        </section>
+
+        <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
+
+        <section class="metric-grid" aria-label="Key performance indicators">
+          <article class="metric-card">
+            <div class="metric-top"><span class="metric-label">TOTAL SALES</span><span class="metric-icon sales-icon" aria-hidden="true">$</span></div>
+            <div class="metric-value" id="metric-sales">—</div>
+            <div class="metric-foot"><span class="metric-caption">Revenue generated</span><span class="metric-accent" id="metric-sales-count">—</span></div>
+            <div class="sparkline spark-sales" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-top"><span class="metric-label">NET PROFIT</span><span class="metric-icon profit-icon" aria-hidden="true">↗</span></div>
+            <div class="metric-value" id="metric-profit">—</div>
+            <div class="metric-foot"><span class="metric-caption">Profit margin</span><span class="metric-accent" id="metric-margin">—</span></div>
+            <div class="sparkline spark-profit" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-top"><span class="metric-label">ORDERS</span><span class="metric-icon orders-icon" aria-hidden="true">▤</span></div>
+            <div class="metric-value" id="metric-orders">—</div>
+            <div class="metric-foot"><span class="metric-caption">Unique order IDs</span><span class="metric-accent" id="metric-units">— units</span></div>
+            <div class="sparkline spark-orders" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-top"><span class="metric-label">CUSTOMERS</span><span class="metric-icon customers-icon" aria-hidden="true">♙</span></div>
+            <div class="metric-value" id="metric-customers">—</div>
+            <div class="metric-foot"><span class="metric-caption">Unique customers</span><span class="metric-accent" id="metric-average">— avg. order</span></div>
+            <div class="sparkline spark-customers" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+        </section>
+
+        <section class="chart-grid" id="performance" aria-label="Sales performance charts">
+          <article class="panel trend-panel">
+            <div class="panel-heading">
+              <div><h2>Sales performance</h2><p>Monthly revenue and profit over time</p></div>
+              <span class="panel-tag">BY MONTH</span>
+            </div>
+            <div class="chart-legend"><span><i class="legend-dot sales-dot"></i>Sales</span><span><i class="legend-dot profit-dot"></i>Profit</span></div>
+            <div class="chart-container" id="trend-chart" role="img" aria-label="Monthly sales and profit trend"></div>
+          </article>
+          <article class="panel category-panel">
+            <div class="panel-heading">
+              <div><h2>Sales by category</h2><p>Revenue contribution by product group</p></div>
+              <button class="more-button" type="button" aria-label="Category chart details">···</button>
+            </div>
+            <div id="category-chart" class="category-chart"></div>
+            <div class="chart-footnote"><span class="footnote-dot"></span> Share of total sales</div>
+          </article>
+        </section>
+
+        <section class="lower-grid" aria-label="Regional and product performance">
+          <article class="panel region-panel">
+            <div class="panel-heading">
+              <div><h2>Regional overview</h2><p>Sales and profit by region</p></div>
+              <span class="subtle-period">ALL REGIONS</span>
+            </div>
+            <div id="region-chart" class="region-list"></div>
+          </article>
+          <article class="panel product-panel">
+            <div class="panel-heading">
+              <div><h2>Top sub-categories</h2><p>Ranked by sales revenue</p></div>
+              <span class="subtle-period">TOP 5</span>
+            </div>
+            <div id="subcategory-chart" class="subcategory-list"></div>
+          </article>
+        </section>
+
+        <section class="panel transactions-panel" id="transactions">
+          <div class="panel-heading table-heading">
+            <div><h2>Recent transactions</h2><p id="table-summary">Loading order line items...</p></div>
+            <label class="sort-control">SORT BY
+              <select id="sort-filter" aria-label="Sort transactions"><option value="sales-desc">Highest sales</option><option value="date-desc">Newest first</option><option value="profit-desc">Highest profit</option><option value="sales-asc">Lowest sales</option></select>
+            </label>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ORDER</th><th>PRODUCT</th><th>CATEGORY</th><th>DATE</th><th>REGION</th><th>QTY</th><th>SALES</th><th>PROFIT</th></tr></thead>
+              <tbody id="transactions-body"></tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span id="pagination-summary">—</span>
+            <div class="pagination"><button id="prev-page" type="button" aria-label="Previous page">‹</button><span id="page-number">1</span><button id="next-page" type="button" aria-label="Next page">›</button></div>
+          </div>
+        </section>
+
+        <footer class="page-footer"><span>Northstar Analytics <span class="footer-dot">·</span> Sample Superstore dataset</span><span id="data-source">Preparing data...</span></footer>
+      </main>
+    </div>
+  </body>
+</html>
